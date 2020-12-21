@@ -1,5 +1,6 @@
 package me.holzenkamp.games.tschausepp.business;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -21,15 +22,11 @@ public class GameController {
     }
 
     private String newGameId() {
-        return "dummy";
-        // FIXME
-        /*
         String gameId = RandomStringUtils.randomAlphanumeric(10);
         if (matches.containsKey(gameId)) {
             return newGameId();
         }
         return gameId;
-         */
     }
 
 }
