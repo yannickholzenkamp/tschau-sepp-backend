@@ -43,6 +43,8 @@ public class GameRestController {
                 .state(match.getState())
                 .activePlayer(match.getActivePlayer())
                 .lastDiscardedCard(match.getLastDiscardedCard())
+                .round(match.getRound())
+                .winner(match.getWinner())
                 .build();
     }
 
@@ -51,6 +53,13 @@ public class GameRestController {
         Match match = getMatch(gameId);
         match.startGame();
         return GameMeta.builder().id(gameId).players(match.getPlayers()).state(match.getState()).build();
+    }
+
+    @GetMapping("/api/games/{gameId}/next")
+    public GameMeta nextPlayer(@PathVariable("gameId") String gameId) {
+        Match match = getMatch(gameId);
+        match.nextPlayer();
+        return GameMeta.builder().id(gameId).players(match.getPlayers()).build();
     }
 
     @GetMapping("/api/games/{gameId}/cards")

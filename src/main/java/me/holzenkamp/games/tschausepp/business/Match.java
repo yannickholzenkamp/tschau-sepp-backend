@@ -5,6 +5,7 @@ import me.holzenkamp.games.tschausepp.business.cards.StackOfCards;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class Match {
     private static final int START_CARDS = 7;
@@ -14,6 +15,8 @@ public class Match {
     private List<Player> players = new ArrayList<>();
     private MatchState state = MatchState.CREATED;
     private Player activePlayer;
+    private Integer round = 0;
+    private Player winner;
 
     public Match() {
         this.stackOfCards = new StackOfCards();
@@ -39,6 +42,14 @@ public class Match {
         return state;
     }
 
+    public Integer getRound() {
+        return round;
+    }
+
+    public Player getWinner() {
+        return winner;
+    }
+
     public Player getActivePlayer() {
         return activePlayer;
     }
@@ -62,6 +73,9 @@ public class Match {
     }
 
     public void nextPlayer() {
+        if (activePlayer.getId() == 0) {
+            round++;
+        }
         int nextPlayerId = activePlayer.getId() + 1;
         activePlayer = players.get(nextPlayerId < players.size() ? nextPlayerId : 0);
     }
@@ -78,6 +92,14 @@ public class Match {
             throw new RuntimeException("card is not available");
         }
         stackOfCards.put(card);
-        nextPlayer();
+        this.checkIfFinished();
+    }
+
+    private void checkIfFinished() {
+        Optional<Player> possibleWinner = players.stream().filter(player -> player.getCards().size() < 1).findAny();
+        if (possibleWinner.isPresent()) {
+            state = MatchState.OVER;
+            winner = possibleWinner.get();
+        }
     }
 }

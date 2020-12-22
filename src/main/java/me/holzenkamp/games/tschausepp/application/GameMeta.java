@@ -17,4 +17,6 @@ public class GameMeta {
     private MatchState state;
     private Player activePlayer;
     private Card lastDiscardedCard;
+    private Integer round;
+    private Player winner;
 }
