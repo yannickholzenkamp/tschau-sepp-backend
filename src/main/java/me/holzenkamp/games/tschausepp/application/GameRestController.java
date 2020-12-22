@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "*")
 public class GameRestController {
 
     private GameController gameController;
