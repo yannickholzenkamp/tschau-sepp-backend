@@ -32,6 +32,13 @@ public class StackOfCards {
         discarded.add(card);
     }
 
+    public Card lastDiscarded() {
+        if (discarded.size() > 0) {
+            return discarded.get(discarded.size() - 1);
+        }
+        return null;
+    }
+
     private List<Card> generateDeck() {
         List<Card> cards = new ArrayList<>();
         for (CardType type : CardType.values()) {

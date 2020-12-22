@@ -1,5 +1,6 @@
 package me.holzenkamp.games.tschausepp.application;
 
+import me.holzenkamp.games.tschausepp.business.AdminOverview;
 import me.holzenkamp.games.tschausepp.business.GameController;
 import me.holzenkamp.games.tschausepp.business.Match;
 import me.holzenkamp.games.tschausepp.business.Player;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
+@CrossOrigin
 public class GameRestController {
 
     private GameController gameController;
@@ -35,14 +37,20 @@ public class GameRestController {
     @GetMapping("/api/games/{gameId}")
     public GameMeta getGame(@PathVariable("gameId") String gameId) {
         Match match = getMatch(gameId);
-        return GameMeta.builder().id(gameId).players(match.getPlayers()).build();
+        return GameMeta.builder()
+                .id(gameId)
+                .players(match.getPlayers())
+                .state(match.getState())
+                .activePlayer(match.getActivePlayer())
+                .lastDiscardedCard(match.getLastDiscardedCard())
+                .build();
     }
 
     @GetMapping("/api/games/{gameId}/start")
     public GameMeta startGame(@PathVariable("gameId") String gameId) {
         Match match = getMatch(gameId);
         match.startGame();
-        return GameMeta.builder().id(gameId).players(match.getPlayers()).build();
+        return GameMeta.builder().id(gameId).players(match.getPlayers()).state(match.getState()).build();
     }
 
     @GetMapping("/api/games/{gameId}/cards")
@@ -56,6 +64,11 @@ public class GameRestController {
         Match match = getMatch(gameId);
         match.putCard(playerId, card);
         return GameMeta.builder().id(gameId).players(match.getPlayers()).build();
+    }
+
+    @GetMapping("/api/admin/games")
+    public AdminOverview adminOverview() {
+        return gameController.getAdminOverview();
     }
 
     private Match getMatch(String gameId) {
