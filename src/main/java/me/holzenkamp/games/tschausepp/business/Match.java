@@ -1,6 +1,7 @@
 package me.holzenkamp.games.tschausepp.business;
 
 import me.holzenkamp.games.tschausepp.business.cards.Card;
+import me.holzenkamp.games.tschausepp.business.cards.CardNumber;
 import me.holzenkamp.games.tschausepp.business.cards.StackOfCards;
 
 import java.util.ArrayList;
@@ -50,6 +51,14 @@ public class Match {
         return winner;
     }
 
+    public Integer getSevens() {
+        return this.stackOfCards.getSevens();
+    }
+
+    public List<Card> getDiscarded() {
+        return this.stackOfCards.getDiscarded();
+    }
+
     public Player getActivePlayer() {
         return activePlayer;
     }
@@ -87,9 +96,11 @@ public class Match {
     }
 
     public void putCard(int playerId, Card card) {
-        boolean removed = players.get(playerId).getCards().remove(card);
-        if (!removed) {
-            throw new RuntimeException("card is not available");
+        if (!CardNumber.WUNSCH.equals(card.getNumber())) {
+            boolean removed = players.get(playerId).getCards().remove(card);
+            if (!removed) {
+                throw new RuntimeException("card is not available");
+            }
         }
         stackOfCards.put(card);
         this.checkIfFinished();

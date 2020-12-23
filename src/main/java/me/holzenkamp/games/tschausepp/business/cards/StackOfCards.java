@@ -16,14 +16,8 @@ public class StackOfCards {
 
     public Card draw() {
         if (cards.isEmpty()) {
-            if (!discarded.isEmpty()) {
-                cards = discarded;
-                discarded = new ArrayList<>();
-                Collections.shuffle(cards);
-            } else {
-                cards = generateDeck();
-                Collections.shuffle(cards);
-            }
+            cards = generateDeck();
+            Collections.shuffle(cards);
         }
         return cards.remove(0);
     }
@@ -43,10 +37,29 @@ public class StackOfCards {
         List<Card> cards = new ArrayList<>();
         for (CardType type : CardType.values()) {
             for (CardNumber number : CardNumber.values()) {
-                cards.add(Card.builder().type(type).number(number).build());
+                if (!CardNumber.WUNSCH.equals(number)) {
+                    cards.add(Card.builder().type(type).number(number).build());
+                }
             }
         }
         return cards;
     }
 
+    public List<Card> getDiscarded() {
+        return discarded;
+    }
+
+    public Integer getSevens() {
+        int sevens = 0;
+        if (this.discarded.size() > 0) {
+            for (int i = (this.discarded.size() - 1); i >= 0; i--) {
+                if (CardNumber.SIEBEN.equals(this.discarded.get(i).getNumber())) {
+                    sevens++;
+                } else {
+                    break;
+                }
+            }
+        }
+        return sevens;
+    }
 }

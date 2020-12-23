@@ -43,8 +43,10 @@ public class GameRestController {
                 .state(match.getState())
                 .activePlayer(match.getActivePlayer())
                 .lastDiscardedCard(match.getLastDiscardedCard())
+                .allDiscarded(match.getDiscarded())
                 .round(match.getRound())
                 .winner(match.getWinner())
+                .sevens(match.getSevens())
                 .build();
     }
 

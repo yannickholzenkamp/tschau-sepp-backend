@@ -4,6 +4,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -35,10 +36,13 @@ public class GameController {
     }
 
     private void cleanUp() {
-        for (String key : matches.keySet()) {
+        Iterator<String> iterator = matches.keySet().iterator();
+
+        while (iterator.hasNext()) {
+            String key = iterator.next();
             long age = (System.currentTimeMillis() - matches.get(key).getCreated());
             if (age > AGE_LIMIT) {
-                matches.remove(key);
+                iterator.remove();
             }
         }
     }

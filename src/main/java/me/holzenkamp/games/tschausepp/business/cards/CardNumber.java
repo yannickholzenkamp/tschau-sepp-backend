@@ -9,5 +9,6 @@ public enum CardNumber {
     UNDER,
     OBER,
     KOENIG,
-    ASS
+    ASS,
+    WUNSCH
 }
